@@ -9,18 +9,20 @@ const server = http.createServer(app);
 const Routes = require("./app/routes");
 const socketManager = require("./app/socketManager");
 
-
-
 app.use([
   cors(),
   bodyParser.json(),
   bodyParser.urlencoded({ extended: false }),
-  Routes
+  Routes,
 ]);
 
-const io = require("socket.io")(server)
+const io = require("socket.io")(server, {
+  cors: {
+    origin: "*",
+  },
+});
 
-io.on("connection",socketManager)
+io.on("connection", socketManager);
 
 server.listen(PORT, () => {
   console.log("Server is running on port =", PORT);
